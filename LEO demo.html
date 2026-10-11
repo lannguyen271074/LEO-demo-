@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LEO · The Constellation</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,600&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#75aadb;--ice:#cfe8ff;--gold:#f3d58a;--n1:#050d1f;--n2:#0b2347;--n3:#1b4a80}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;font-weight:300;color:#eaf4ff;background:linear-gradient(180deg,var(--n1) 0%,var(--n2) 38%,var(--n3) 72%,#6fa6d8 92%,#dff0ff 100%);overflow-x:hidden}
+#sky{position:fixed;inset:0;z-index:0}
+#aur{position:fixed;inset:-10%;z-index:0;pointer-events:none;opacity:.5;filter:blur(60px);
+ background:radial-gradient(40% 30% at 20% 20%,rgba(117,170,219,.55),transparent),radial-gradient(35% 30% at 80% 35%,rgba(243,213,138,.25),transparent),radial-gradient(40% 35% at 55% 80%,rgba(207,232,255,.3),transparent);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4%,6%) scale(1.12) rotate(4deg)}}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:60;background:linear-gradient(90deg,var(--sky),#fff,var(--gold))}
+/* gate */
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:20px;background:radial-gradient(circle at 50% 40%,#12356a,var(--n1) 70%);transition:opacity 1.4s,visibility 1.4s}
+#gate.hide{opacity:0;visibility:hidden}
+#gate .orb{width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--sky) 45%,#1b4a80);box-shadow:0 0 60px 10px rgba(117,170,219,.7);animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.18);box-shadow:0 0 90px 25px rgba(117,170,219,.8)}}
+#gate h1{font-family:'Italiana',serif;font-weight:400;font-size:clamp(2.2rem,9vw,4rem);letter-spacing:.3em;padding-left:.3em}
+#gate p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--ice)}
+.btn{cursor:pointer;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.7);padding:15px 40px;font:300 .8rem Jost;letter-spacing:.45em;text-transform:uppercase;border-radius:40px;transition:.4s;position:relative;overflow:hidden}
+.btn:hover{background:#fff;color:var(--n2);box-shadow:0 0 40px rgba(255,255,255,.6)}
+#music{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:65;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(5,13,31,.55);backdrop-filter:blur(8px);color:#fff;font-size:18px;cursor:pointer}
+#music.on{box-shadow:0 0 0 0 rgba(207,232,255,.7);animation:ping 2s infinite}
+@keyframes ping{to{box-shadow:0 0 0 18px rgba(207,232,255,0)}}
+section{position:relative;z-index:2}
+/* hero */
+.hero,.finale{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 20px 50px;gap:16px}
+.leo{position:relative;width:min(560px,92%);aspect-ratio:1.5}
+.leo svg{width:100%;height:100%;overflow:visible}
+.leo .ln{stroke:var(--ice);stroke-width:.5;fill:none;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 2px #fff)}
+.leo.go .ln{animation:draw 2.4s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.leo circle{fill:#fff;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 7px var(--sky));animation:tw 2.8s ease-in-out infinite}
+@keyframes tw{50%{opacity:.35;transform:scale(.7)}}
+.leo circle{transform-box:fill-box;transform-origin:center}
+.title{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Italiana',serif;font-size:clamp(4.5rem,24vw,10rem);letter-spacing:.12em;padding-left:.12em;
+ background:linear-gradient(110deg,#fff 10%,var(--sky) 35%,#fff 50%,var(--gold) 65%,#fff 90%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:foil 7s linear infinite;opacity:.95;pointer-events:none}
+@keyframes foil{to{background-position:-260% 0}}
+.kicker{font-size:.7rem;letter-spacing:.6em;text-transform:uppercase;color:var(--ice);padding-left:.6em}
+.quote{max-width:620px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.2rem,3.8vw,1.7rem);line-height:1.65;color:#f2f9ff}
+.arch{width:min(760px,100%);padding:8px;border-radius:220px 220px 14px 14px;background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(117,170,219,.2),rgba(243,213,138,.5));box-shadow:0 0 80px rgba(117,170,219,.35)}
+.arch .in{background:rgba(5,13,31,.75);border-radius:212px 212px 8px 8px;overflow:hidden;backdrop-filter:blur(10px)}
+.arch video{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:linear-gradient(135deg,#12356a,#0b2347)}
+.cap{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;line-height:1.6;padding:10px 18px 14px;min-height:2.6em;outline:none;color:var(--ice)}
+.cap:empty::before{content:"Write your memory here…";opacity:.4}
+.hint{font-size:.65rem;letter-spacing:.5em;color:var(--ice);animation:bob 2.2s infinite}
+@keyframes bob{50%{transform:translateY(9px);opacity:.5}}
+/* timeline */
+.chap{text-align:center;padding:90px 20px 20px}
+.chap h2{font-family:'Italiana',serif;font-weight:400;font-size:clamp(1.8rem,6vw,3rem);letter-spacing:.35em;padding-left:.35em}
+.chap p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--ice);margin-top:8px}
+.tl{position:relative;max-width:1040px;margin:0 auto;padding:50px 18px 40px}
+.spine{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(207,232,255,.18);transform:translateX(-50%)}
+.fill{position:absolute;left:0;top:0;width:1px;height:0;background:linear-gradient(var(--sky),#fff);box-shadow:0 0 12px 2px var(--sky)}
+.it{position:relative;width:calc(50% - 46px);margin-bottom:80px;opacity:0;transform:translateY(70px);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)}
+.it:nth-child(even){margin-left:auto}
+.it.show{opacity:1;transform:none}
+.star{position:absolute;top:48px;width:16px;height:16px;background:#fff;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 8px #fff);opacity:.25;transition:.8s}
+.it:nth-child(odd) .star{right:-54px}.it:nth-child(even) .star{left:-54px}
+.it.show .star{opacity:1;transform:scale(1.9) rotate(180deg);background:var(--gold);filter:drop-shadow(0 0 12px var(--gold))}
+.card{position:relative;padding:8px;border-radius:150px 150px 18px 18px;background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(117,170,219,.15) 50%,rgba(243,213,138,.45));box-shadow:0 25px 60px rgba(0,0,0,.45);transition:transform .3s;transform-style:preserve-3d}
+.card .in{background:rgba(8,22,48,.82);border-radius:142px 142px 10px 10px;overflow:hidden;backdrop-filter:blur(10px)}
+.ph{position:relative;aspect-ratio:4/4.6;overflow:hidden;background:linear-gradient(160deg,#1b4a80,#0b2347);display:flex;align-items:center;justify-content:center}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.5s}
+.card:hover .ph img{transform:scale(1.08)}
+.ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,13,31,.75))}
+.ph .no{font-family:'Italiana',serif;font-size:4rem;color:rgba(207,232,255,.5)}
+.yr{position:absolute;left:0;right:0;bottom:12px;z-index:2;text-align:center;font-family:'Italiana',serif;font-size:2.1rem;letter-spacing:.2em;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.idx{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:2;font-size:.65rem;letter-spacing:.4em;color:var(--gold)}
+.card h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:1.35rem;text-align:center;padding:14px 12px 0;color:#fff}
+/* finale */
+.dawn{font-family:'Italiana',serif;font-size:clamp(8rem,40vw,19rem);line-height:.85;background:linear-gradient(180deg,#fff,var(--gold) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 40px rgba(243,213,138,.6));animation:rise 5s ease-in-out infinite alternate}
+@keyframes rise{to{transform:translateY(-14px) scale(1.03)}}
+.finale .quote{color:#06213f}.finale .kicker{color:#0b2f57}
+.finale .arch .in{background:rgba(255,255,255,.88)}
+.finale .cap{color:#0b2f57}
+.finale .arch{box-shadow:0 0 90px rgba(255,255,255,.7)}
+.sign{font-family:'Italiana',serif;font-size:1.6rem;letter-spacing:.3em;color:#0b2f57;padding-left:.3em}
+footer{position:relative;z-index:2;text-align:center;padding:30px 20px 90px;font-size:.65rem;letter-spacing:.55em;color:#0b2f57;background:#dff0ff}
+@media(max-width:720px){.spine{left:18px}.it,.it:nth-child(even){width:calc(100% - 46px);margin-left:auto}.it .star,.it:nth-child(n) .star{left:-40px;right:auto}.it:nth-child(n) .star{left:-37px}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas><div id="aur"></div><div id="bar"></div>
+<div id="gate"><div class="orb"></div><h1 id="gT"></h1><p id="gS"></p><button class="btn" id="enter">Look up</button></div>
+<button id="music">♪</button><audio id="bgm" loop preload="auto"></audio>
+
+<section class="hero">
+  <div class="kicker" id="kick"></div>
+  <div class="leo" id="leo">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" id="cons"></svg>
+    <div class="title" id="hT"></div>
+  </div>
+  <p class="quote" id="hQ"></p>
+  <div class="arch"><div class="in"><video id="v1" controls playsinline preload="metadata"></video><div class="cap" contenteditable="true" id="c1"></div></div></div>
+  <div class="hint">SCROLL</div>
+</section>
+
+<div class="chap"><h2 id="chT"></h2><p id="chS"></p></div>
+<section class="tl" id="tl"><div class="spine"><div class="fill" id="fill"></div></div></section>
+
+<section class="finale" id="fin">
+  <div class="kicker" id="eK"></div>
+  <div class="dawn">10</div>
+  <p class="quote" id="eQ"></p>
+  <div class="arch"><div class="in"><video id="v2" controls playsinline preload="metadata"></video><div class="cap" contenteditable="true" id="c2"></div></div></div>
+  <div class="sign" id="sig"></div>
+</section>
+<footer id="foot"></footer>
+
+<script>
+/* ============================================================
+   ★ CONFIG – edit only this block ★   (files go in /assets)
+   ============================================================ */
+const CONFIG={
+  music:"assets/music/see-you-again.mp3",volume:.5,
+  gateTitle:"LEO",gateSub:"Every legend begins as a star",
+  kicker:"The constellation of a lifetime",
+  title:"MESSI",
+  openingQuote:"Long before the stadiums and the trophies, there was a boy and a ball under a sky that seemed too big. Tonight, we look up and follow the light he left behind.",
+  intro:{src:"assets/video/intro.mp4",poster:"",caption:""},
+  chapterTitle:"22 STARS",
+  chapterSub:"Each moment a point of light. Together, a constellation.",
+  endKicker:"The last light of the night",
+  closingQuote:"Stars don't ask to be remembered — they simply shine until we can't help but look up. Thank you, Leo, for teaching us to keep looking up. Gracias, Capitán.",
+  outro:{src:"assets/video/outro.mp4",poster:"",caption:""},
+  signature:"FOREVER GRATEFUL",
+  footer:"LEO · ALBICELESTE · FOREVER",
+  photos:[ /* caption "" = blank for you to write */
+    {year:"1987",title:"A star is born",img:"assets/photos/01.jpg",caption:""},
+    {year:"1995",title:"The first dreams",img:"assets/photos/02.jpg",caption:""},
+    {year:"2004",title:"The sky-blue shirt",img:"assets/photos/03.jpg",caption:""},
+    {year:"2005",title:"World Champion U20",img:"assets/photos/04.jpg",caption:""},
+    {year:"2005",title:"Senior debut",img:"assets/photos/05.jpg",caption:""},
+    {year:"2006",title:"First World Cup",img:"assets/photos/06.jpg",caption:""},
+    {year:"2007",title:"Copa América Final",img:"assets/photos/07.jpg",caption:""},
+    {year:"2008",title:"Olympic gold",img:"assets/photos/08.jpg",caption:""},
+    {year:"2010",title:"South Africa",img:"assets/photos/09.jpg",caption:""},
+    {year:"2011",title:"Copa América at home",img:"assets/photos/10.jpg",caption:""},
+    {year:"2014",title:"The Brazil final",img:"assets/photos/11.jpg",caption:""},
+    {year:"2015",title:"Chile, so close",img:"assets/photos/12.jpg",caption:""},
+    {year:"2016",title:"Copa Centenario",img:"assets/photos/13.jpg",caption:""},
+    {year:"2018",title:"Russia",img:"assets/photos/14.jpg",caption:""},
+    {year:"2019",title:"Copa América, Brazil",img:"assets/photos/15.jpg",caption:""},
+    {year:"2021",title:"The Maracanã night",img:"assets/photos/16.jpg",caption:""},
+    {year:"2022",title:"Finalissima",img:"assets/photos/17.jpg",caption:""},
+    {year:"2022",title:"World Champion",img:"assets/photos/18.jpg",caption:""},
+    {year:"2023",title:"The eighth Golden Ball",img:"assets/photos/19.jpg",caption:""},
+    {year:"2024",title:"Copa América 2024",img:"assets/photos/20.jpg",caption:""},
+    {year:"2026",title:"Another chapter",img:"assets/photos/21.jpg",caption:""},
+    {year:"∞",title:"Shining forever",img:"assets/photos/22.jpg",caption:""}
+  ]
+};
+/* ===================== END CONFIG ===================== */
+const $=i=>document.getElementById(i),T=(i,t)=>$(i).textContent=t,esc=s=>s.replace(/</g,'&lt;');
+T('gT',CONFIG.gateTitle);T('gS',CONFIG.gateSub);T('kick',CONFIG.kicker);T('hT',CONFIG.title);T('hQ',CONFIG.openingQuote);
+T('chT',CONFIG.chapterTitle);T('chS',CONFIG.chapterSub);T('eK',CONFIG.endKicker);T('eQ',CONFIG.closingQuote);T('sig',CONFIG.signature);T('foot',CONFIG.footer);
+[['v1','intro','c1'],['v2','outro','c2']].forEach(([v,k,c])=>{const e=$(v);e.src=CONFIG[k].src;if(CONFIG[k].poster)e.poster=CONFIG[k].poster;$(c).textContent=CONFIG[k].caption});
+// chòm sao Leo
+const S=[[20,80],[27,62],[35,46],[32,30],[26,20],[16,24],[62,36],[60,56],[88,46]],L=[[0,1],[1,2],[2,3],[3,4],[4,5],[2,6],[6,7],[6,8],[7,8],[7,0]];
+$('cons').innerHTML=L.map(([a,b])=>`<line class="ln" pathLength="100" x1="${S[a][0]}" y1="${S[a][1]}" x2="${S[b][0]}" y2="${S[b][1]}"/>`).join('')+
+ S.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i==0||i==8?1.8:1.2}" style="animation-delay:${i*.35}s"/>`).join('');
+// timeline
+$('tl').insertAdjacentHTML('beforeend',CONFIG.photos.map((p,i)=>`<article class="it"><div class="star"></div><div class="card"><div class="in">
+<div class="ph"><span class="no">${p.year}</span><img src="${p.img}" alt="" loading="lazy" onerror="this.remove()"><span class="idx">${String(i+1).padStart(2,'0')} / ${CONFIG.photos.length}</span><span class="yr">${p.year}</span></div>
+<h3>${esc(p.title)}</h3><div class="cap" contenteditable="true">${esc(p.caption)}</div></div></div></article>`).join(''));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');const r=e.target.querySelector('.star').getBoundingClientRect();spark(r.left+8,r.top+8)}}),{threshold:.2});
+document.querySelectorAll('.it').forEach(x=>io.observe(x));
+document.querySelectorAll('.card').forEach(c=>{
+ c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${x*10}deg) rotateX(${-y*10}deg)`});
+ c.addEventListener('pointerleave',()=>c.style.transform='')});
+// cuộn
+const tl=$('tl');
+addEventListener('scroll',()=>{const h=document.documentElement;$('bar').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%';
+ const r=tl.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*.6-r.top)/r.height));$('fill').style.height=p*100+'%'},{passive:true});
+// nhạc
+const bgm=$('bgm'),mb=$('music');bgm.src=CONFIG.music;bgm.volume=CONFIG.volume;let want=false;
+const setM=on=>{want=on;on?bgm.play().catch(()=>{}):bgm.pause();mb.classList.toggle('on',on);mb.textContent=on?'♪':'✕'};
+mb.onclick=()=>setM(!want);
+$('enter').onclick=()=>{$('gate').classList.add('hide');setM(true);setTimeout(()=>$('leo').classList.add('go'),500);for(let i=0;i<5;i++)setTimeout(shoot,i*350)};
+['v1','v2'].forEach(id=>{const v=$(id);v.onplay=()=>bgm.pause();v.onpause=v.onended=()=>{if(want)bgm.play().catch(()=>{})}});
+// bầu trời sao: parallax + sao băng + tia lấp lánh
+const cv=$('sky'),g=cv.getContext('2d');let W,H,st=[],sh=[],sp=[],mx=0,my=0;
+const rs=()=>{W=cv.width=innerWidth;H=cv.height=innerHeight;st=[...Array(Math.round(W*H/5500))].map(()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,z:Math.random()*.8+.2,a:Math.random()*6.28,c:Math.random()<.15?'#f3d58a':'#fff'}))};rs();addEventListener('resize',rs);
+addEventListener('pointermove',e=>{mx=e.clientX/W-.5;my=e.clientY/H-.5});
+function shoot(){sh.push({x:Math.random()*W*.9+W*.1,y:Math.random()*H*.4,vx:-(8+Math.random()*6),vy:4+Math.random()*3,l:60})}
+setInterval(()=>{if(Math.random()<.7)shoot()},3800);
+function spark(x,y){for(let i=0;i<22;i++){const a=Math.random()*6.28,s=Math.random()*4+1;sp.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:50,c:i%3?'#f3d58a':'#cfe8ff'})}}
+(function loop(){g.clearRect(0,0,W,H);const sc=scrollY*.0004;
+ st.forEach(s=>{s.a+=.03*s.z;let y=(s.y-scrollY*s.z*.25)%H;if(y<0)y+=H;g.globalAlpha=.35+.65*Math.abs(Math.sin(s.a));g.fillStyle=s.c;g.beginPath();g.arc(s.x+mx*30*s.z,y+my*30*s.z,s.r*s.z+.2,0,6.28);g.fill()});
+ sh=sh.filter(s=>s.l>0);sh.forEach(s=>{s.x+=s.vx;s.y+=s.vy;s.l--;const gr=g.createLinearGradient(s.x,s.y,s.x-s.vx*7,s.y-s.vy*7);gr.addColorStop(0,'rgba(255,255,255,'+s.l/60+')');gr.addColorStop(1,'transparent');g.globalAlpha=1;g.strokeStyle=gr;g.lineWidth=2;g.beginPath();g.moveTo(s.x,s.y);g.lineTo(s.x-s.vx*7,s.y-s.vy*7);g.stroke()});
+ sp=sp.filter(p=>p.l>0);sp.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.96;p.vy*=.96;p.l--;g.globalAlpha=p.l/50;g.fillStyle=p.c;g.beginPath();g.arc(p.x,p.y,2,0,6.28);g.fill()});
+ requestAnimationFrame(loop)})();
+new IntersectionObserver(e=>{if(e[0].isIntersecting)for(let i=0;i<7;i++)setTimeout(shoot,i*250)},{threshold:.4}).observe($('fin'));
+</script>
+</body>
+</html>
